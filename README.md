@@ -1,2 +1,2 @@
-# async_main
+# `async_main`
 Runtime-agnostic async main proc macro
