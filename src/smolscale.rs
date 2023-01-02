@@ -24,7 +24,10 @@ pub(crate) fn smolscale(tokens: &mut TokenStream, item: TokenStream) {
         TokenTree::Ident(Ident::new("smolscale", Span::call_site())),
         TokenTree::Punct(Punct::new(':', Spacing::Joint)),
         TokenTree::Punct(Punct::new(':', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("permanently_single_threaded", Span::call_site())),
+        TokenTree::Ident(Ident::new(
+            "permanently_single_threaded",
+            Span::call_site(),
+        )),
         TokenTree::Group(Group::new(
             Delimiter::Parenthesis,
             TokenStream::new(),

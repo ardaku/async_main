@@ -7,8 +7,9 @@
 // At your choosing (See accompanying files LICENSE_APACHE_2_0.txt,
 // LICENSE_MIT.txt and LICENSE_BOOST_1_0.txt).
 //
-//! Runtime-agnostic async main proc macro.  By default, this crate uses a
-//! single-threaded runtime.
+//! Runtime-agnostic async main proc macro.  Currently, this crate only supports
+//! single-threaded task pools, but in a future version will add a configuration
+//! option to enable multi-threaded task pools.
 //!
 //! # Async Executor (with `futures-lite`)
 //! ```rust
@@ -40,7 +41,22 @@
 #![doc = include_str!("../examples/tokio.rs")]
 //! ```
 
-extern crate proc_macro;
+#![forbid(unsafe_code)]
+#![warn(
+    anonymous_parameters,
+    missing_copy_implementations,
+    missing_debug_implementations,
+    missing_docs,
+    nonstandard_style,
+    rust_2018_idioms,
+    single_use_lifetimes,
+    trivial_casts,
+    trivial_numeric_casts,
+    unreachable_pub,
+    unused_extern_crates,
+    unused_qualifications,
+    variant_size_differences
+)]
 
 mod async_executor;
 mod async_std;
@@ -54,6 +70,19 @@ use proc_macro::{
     TokenTree,
 };
 
+/// Mark the entry point of the program.
+///
+/// # Current Runtime/Executor list
+///  - `async_executor`
+///  - `async_std`
+///  - `futures`
+///  - `pasts`
+///  - `smolscale`
+///  - `tokio`
+///
+/// # Options
+/// Currently, no options are available and the crate will error if you add more
+/// than one attribute parameter.
 #[proc_macro_attribute]
 pub fn async_main(attr: TokenStream, item: TokenStream) -> TokenStream {
     let attr: Vec<_> = attr.into_iter().collect();
