@@ -14,15 +14,25 @@
 //! ```rust
 #![doc = include_str!("../examples/async_executor.rs")]
 //! ```
-//!
+//! 
 //! # Async Std
 //! ```rust
 #![doc = include_str!("../examples/async_std.rs")]
 //! ```
 //! 
+//! # Futures
+//! ```rust
+#![doc = include_str!("../examples/futures.rs")]
+//! ```
+//! 
 //! # Pasts
 //! ```rust
 #![doc = include_str!("../examples/pasts.rs")]
+//! ```
+//! 
+//! # Smolscale
+//! ```rust
+#![doc = include_str!("../examples/smolscale.rs")]
 //! ```
 //! 
 //! # Tokio
@@ -36,6 +46,7 @@ mod async_executor;
 mod async_std;
 mod futures;
 mod pasts;
+mod smolscale;
 mod tokio;
 
 use proc_macro::{
@@ -75,6 +86,7 @@ pub fn async_main(attr: TokenStream, item: TokenStream) -> TokenStream {
         "async_std" => async_std::async_std(&mut tokens, item),
         "futures" => futures::futures(&mut tokens, item),
         "pasts" => pasts::pasts(&mut tokens, item),
+        "smolscale" => smolscale::smolscale(&mut tokens, item),
         "tokio" => tokio::tokio(&mut tokens, item),
         other => error(
             &mut tokens,

@@ -32,7 +32,6 @@ pub(crate) fn futures(tokens: &mut TokenStream, item: TokenStream) {
             TokenStream::new(),
         )),
         TokenTree::Punct(Punct::new(';', Spacing::Alone)),
-
         TokenTree::Ident(Ident::new("executor", Span::call_site())),
         TokenTree::Punct(Punct::new('.', Spacing::Alone)),
         TokenTree::Ident(Ident::new("run_until", Span::call_site())),

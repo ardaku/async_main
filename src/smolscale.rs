@@ -9,71 +9,30 @@
 
 use super::*;
 
-pub(crate) fn tokio(tokens: &mut TokenStream, item: TokenStream) {
+pub(crate) fn smolscale(tokens: &mut TokenStream, item: TokenStream) {
     let mut body = item;
 
     body.extend([
         TokenTree::Ident(Ident::new("let", Span::call_site())),
         TokenTree::Ident(Ident::new("executor", Span::call_site())),
         TokenTree::Punct(Punct::new('=', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("tokio", Span::call_site())),
-        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
-        TokenTree::Punct(Punct::new(':', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("runtime", Span::call_site())),
-        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
-        TokenTree::Punct(Punct::new(':', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("Builder", Span::call_site())),
-        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
-        TokenTree::Punct(Punct::new(':', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("new_current_thread", Span::call_site())),
         TokenTree::Group(Group::new(
             Delimiter::Parenthesis,
             TokenStream::new(),
-        )),
-        TokenTree::Punct(Punct::new('.', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("enable_all", Span::call_site())),
-        TokenTree::Group(Group::new(
-            Delimiter::Parenthesis,
-            TokenStream::new(),
-        )),
-        TokenTree::Punct(Punct::new('.', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("build", Span::call_site())),
-        TokenTree::Group(Group::new(
-            Delimiter::Parenthesis,
-            TokenStream::new(),
-        )),
-        TokenTree::Punct(Punct::new('.', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("expect", Span::call_site())),
-        TokenTree::Group(Group::new(
-            Delimiter::Parenthesis,
-            TokenStream::from_iter([TokenTree::Literal(Literal::string(
-                "Failed to start tokio runtime",
-            ))]),
         )),
         TokenTree::Punct(Punct::new(';', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("let", Span::call_site())),
-        TokenTree::Ident(Ident::new("executor", Span::call_site())),
-        TokenTree::Punct(Punct::new('=', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("std", Span::call_site())),
+        TokenTree::Ident(Ident::new("smolscale", Span::call_site())),
         TokenTree::Punct(Punct::new(':', Spacing::Joint)),
         TokenTree::Punct(Punct::new(':', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("sync", Span::call_site())),
-        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
-        TokenTree::Punct(Punct::new(':', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("Arc", Span::call_site())),
-        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
-        TokenTree::Punct(Punct::new(':', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("new", Span::call_site())),
+        TokenTree::Ident(Ident::new("permanently_single_threaded", Span::call_site())),
         TokenTree::Group(Group::new(
             Delimiter::Parenthesis,
-            TokenStream::from_iter([TokenTree::Ident(Ident::new(
-                "executor",
-                Span::call_site(),
-            ))]),
+            TokenStream::new(),
         )),
         TokenTree::Punct(Punct::new(';', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("executor", Span::call_site())),
-        TokenTree::Punct(Punct::new('.', Spacing::Alone)),
+        TokenTree::Ident(Ident::new("smolscale", Span::call_site())),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Punct(Punct::new(':', Spacing::Alone)),
         TokenTree::Ident(Ident::new("block_on", Span::call_site())),
         TokenTree::Group(Group::new(
             Delimiter::Parenthesis,

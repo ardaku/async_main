@@ -28,7 +28,6 @@ pub(crate) fn async_executor(tokens: &mut TokenStream, item: TokenStream) {
             TokenStream::new(),
         )),
         TokenTree::Punct(Punct::new(';', Spacing::Alone)),
-
         TokenTree::Ident(Ident::new("let", Span::call_site())),
         TokenTree::Ident(Ident::new("executor", Span::call_site())),
         TokenTree::Punct(Punct::new('=', Spacing::Alone)),
@@ -50,7 +49,6 @@ pub(crate) fn async_executor(tokens: &mut TokenStream, item: TokenStream) {
             ))]),
         )),
         TokenTree::Punct(Punct::new(';', Spacing::Alone)),
-
         TokenTree::Ident(Ident::new("let", Span::call_site())),
         TokenTree::Ident(Ident::new("future", Span::call_site())),
         TokenTree::Punct(Punct::new('=', Spacing::Alone)),
@@ -82,7 +80,6 @@ pub(crate) fn async_executor(tokens: &mut TokenStream, item: TokenStream) {
             ]),
         )),
         TokenTree::Punct(Punct::new(';', Spacing::Alone)),
-
         TokenTree::Ident(Ident::new("futures_lite", Span::call_site())),
         TokenTree::Punct(Punct::new(':', Spacing::Joint)),
         TokenTree::Punct(Punct::new(':', Spacing::Alone)),
