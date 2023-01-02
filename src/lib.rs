@@ -34,6 +34,7 @@ extern crate proc_macro;
 
 mod async_executor;
 mod async_std;
+mod futures;
 mod pasts;
 mod tokio;
 
@@ -57,7 +58,7 @@ pub fn async_main(attr: TokenStream, item: TokenStream) -> TokenStream {
     let Some(runtime) = attr.get(0) else {
         error(&mut tokens, concat!(
             "Expected one of: ",
-            "[async_executor, async_std, pasts, tokio]",
+            "[async_executor, async_std, futures, pasts, tokio]",
             " specifying which runtime"));
         return tokens;
     };
@@ -72,6 +73,7 @@ pub fn async_main(attr: TokenStream, item: TokenStream) -> TokenStream {
     match runtime.to_string().as_str() {
         "async_executor" => async_executor::async_executor(&mut tokens, item),
         "async_std" => async_std::async_std(&mut tokens, item),
+        "futures" => futures::futures(&mut tokens, item),
         "pasts" => pasts::pasts(&mut tokens, item),
         "tokio" => tokio::tokio(&mut tokens, item),
         other => error(
