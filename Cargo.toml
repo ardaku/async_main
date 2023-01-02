@@ -25,12 +25,13 @@ edition = "2021"
 proc-macro = true
 
 [dev-dependencies]
+async-executor = "1.5"
 async-std = "1.12"
+futures-lite = "1.12"
 pasts = "0.12"
 tokio = { version = "1.23", features = ["rt"] }
 
 [features]
 asynchronix = []
-async-executor = []
 futures = []
 smolscale = []

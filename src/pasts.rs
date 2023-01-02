@@ -28,6 +28,7 @@ pub(crate) fn pasts(tokens: &mut TokenStream, item: TokenStream) {
             TokenStream::new(),
         )),
         TokenTree::Punct(Punct::new(';', Spacing::Alone)),
+
         TokenTree::Ident(Ident::new("executor", Span::call_site())),
         TokenTree::Punct(Punct::new('.', Spacing::Alone)),
         TokenTree::Ident(Ident::new("spawn", Span::call_site())),

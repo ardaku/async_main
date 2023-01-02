@@ -9,46 +9,23 @@
 
 use super::*;
 
-pub(crate) fn tokio(tokens: &mut TokenStream, item: TokenStream) {
+pub(crate) fn async_executor(tokens: &mut TokenStream, item: TokenStream) {
     let mut body = item;
 
     body.extend([
         TokenTree::Ident(Ident::new("let", Span::call_site())),
         TokenTree::Ident(Ident::new("executor", Span::call_site())),
         TokenTree::Punct(Punct::new('=', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("tokio", Span::call_site())),
+        TokenTree::Ident(Ident::new("async_executor", Span::call_site())),
         TokenTree::Punct(Punct::new(':', Spacing::Joint)),
         TokenTree::Punct(Punct::new(':', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("runtime", Span::call_site())),
+        TokenTree::Ident(Ident::new("LocalExecutor", Span::call_site())),
         TokenTree::Punct(Punct::new(':', Spacing::Joint)),
         TokenTree::Punct(Punct::new(':', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("Builder", Span::call_site())),
-        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
-        TokenTree::Punct(Punct::new(':', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("new_current_thread", Span::call_site())),
+        TokenTree::Ident(Ident::new("new", Span::call_site())),
         TokenTree::Group(Group::new(
             Delimiter::Parenthesis,
             TokenStream::new(),
-        )),
-        TokenTree::Punct(Punct::new('.', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("enable_all", Span::call_site())),
-        TokenTree::Group(Group::new(
-            Delimiter::Parenthesis,
-            TokenStream::new(),
-        )),
-        TokenTree::Punct(Punct::new('.', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("build", Span::call_site())),
-        TokenTree::Group(Group::new(
-            Delimiter::Parenthesis,
-            TokenStream::new(),
-        )),
-        TokenTree::Punct(Punct::new('.', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("expect", Span::call_site())),
-        TokenTree::Group(Group::new(
-            Delimiter::Parenthesis,
-            TokenStream::from_iter([TokenTree::Literal(Literal::string(
-                "Failed to start tokio runtime",
-            ))]),
         )),
         TokenTree::Punct(Punct::new(';', Spacing::Alone)),
 
@@ -74,9 +51,12 @@ pub(crate) fn tokio(tokens: &mut TokenStream, item: TokenStream) {
         )),
         TokenTree::Punct(Punct::new(';', Spacing::Alone)),
 
+        TokenTree::Ident(Ident::new("let", Span::call_site())),
+        TokenTree::Ident(Ident::new("future", Span::call_site())),
+        TokenTree::Punct(Punct::new('=', Spacing::Alone)),
         TokenTree::Ident(Ident::new("executor", Span::call_site())),
         TokenTree::Punct(Punct::new('.', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("block_on", Span::call_site())),
+        TokenTree::Ident(Ident::new("run", Span::call_site())),
         TokenTree::Group(Group::new(
             Delimiter::Parenthesis,
             TokenStream::from_iter([
@@ -100,6 +80,22 @@ pub(crate) fn tokio(tokens: &mut TokenStream, item: TokenStream) {
                     ]),
                 )),
             ]),
+        )),
+        TokenTree::Punct(Punct::new(';', Spacing::Alone)),
+
+        TokenTree::Ident(Ident::new("futures_lite", Span::call_site())),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Punct(Punct::new(':', Spacing::Alone)),
+        TokenTree::Ident(Ident::new("future", Span::call_site())),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Punct(Punct::new(':', Spacing::Alone)),
+        TokenTree::Ident(Ident::new("block_on", Span::call_site())),
+        TokenTree::Group(Group::new(
+            Delimiter::Parenthesis,
+            TokenStream::from_iter([TokenTree::Ident(Ident::new(
+                "future",
+                Span::call_site(),
+            ))]),
         )),
         TokenTree::Punct(Punct::new(';', Spacing::Alone)),
     ]);
