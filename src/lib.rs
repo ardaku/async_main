@@ -10,11 +10,16 @@
 //! Runtime-agnostic async main proc macro.  By default, this crate uses a
 //! single-threaded runtime.
 //!
+//! # Async Std
+//! ```rust
+#![doc = include_str!("../examples/async_std.rs")]
+//! ```
+//! 
 //! # Pasts
 //! ```rust
 #![doc = include_str!("../examples/pasts.rs")]
 //! ```
-//!
+//! 
 //! # Tokio
 //! ```rust
 #![doc = include_str!("../examples/tokio.rs")]
@@ -22,6 +27,7 @@
 
 extern crate proc_macro;
 
+mod async_std;
 mod pasts;
 mod tokio;
 
@@ -43,7 +49,10 @@ pub fn async_main(attr: TokenStream, item: TokenStream) -> TokenStream {
         return tokens;
     }
     let Some(runtime) = attr.get(0) else {
-        error(&mut tokens, "Expected one of: [pasts] specifying which runtime");
+        error(&mut tokens, concat!(
+            "Expected one of: ",
+            "[async_std, pasts, tokio]",
+            " specifying which runtime"));
         return tokens;
     };
     let TokenTree::Ident(runtime) = runtime else {
@@ -55,6 +64,7 @@ pub fn async_main(attr: TokenStream, item: TokenStream) -> TokenStream {
     };
 
     match runtime.to_string().as_str() {
+        "async_std" => async_std::async_std(&mut tokens, item),
         "pasts" => pasts::pasts(&mut tokens, item),
         "tokio" => tokio::tokio(&mut tokens, item),
         other => error(
