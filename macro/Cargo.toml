@@ -7,12 +7,8 @@
 # At your choosing (See accompanying files LICENSE_APACHE_2_0.txt,
 # LICENSE_MIT.txt and LICENSE_BOOST_1_0.txt).
 
-[workspace]
-members = [".", "macro"]
-default_members = [".", "macro"]
-
 [package]
-name = "async_main"
+name = "async_main_macro"
 version = "0.1.0"
 license = "Apache-2.0 OR BSL-1.0 OR MIT"
 description = "Runtime-agnostic async main proc macro"
@@ -22,17 +18,8 @@ homepage = "https://github.com/ardaku/async_main/blob/stable/CHANGELOG.md"
 include = ["/src/**", "/examples/**", "/README.md"]
 keywords = ["async", "platform-agnostic", "cross-platform", "executor", "main"]
 categories = ["asynchronous", "embedded", "no-std", "rust-patterns", "wasm"]
-readme = "../README.md"
+readme = "README.md"
 edition = "2021"
 
-[dependencies]
-async_main_macro = { path = "macro" }
-
-[dev-dependencies]
-async-executor = "1.5"
-async-std = "1.12"
-futures = { version = "0.3", features = ["executor"] }
-futures-lite = "1.12"
-pasts = "0.12"
-smolscale = "0.3"
-tokio = { version = "1.23", features = ["rt"] }
+[lib]
+proc-macro = true

@@ -13,44 +13,38 @@ pub(crate) fn futures(tokens: &mut TokenStream, item: TokenStream) {
     let mut body = item;
 
     body.extend([
-        TokenTree::Ident(Ident::new("let", Span::call_site())),
-        TokenTree::Ident(Ident::new("mut", Span::call_site())),
-        TokenTree::Ident(Ident::new("executor", Span::call_site())),
+        ident("let"),
+        ident("mut"),
+        ident("executor"),
         TokenTree::Punct(Punct::new('=', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("futures", Span::call_site())),
+        ident("futures"),
         TokenTree::Punct(Punct::new(':', Spacing::Joint)),
         TokenTree::Punct(Punct::new(':', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("executor", Span::call_site())),
+        ident("executor"),
         TokenTree::Punct(Punct::new(':', Spacing::Joint)),
         TokenTree::Punct(Punct::new(':', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("LocalPool", Span::call_site())),
+        ident("LocalPool"),
         TokenTree::Punct(Punct::new(':', Spacing::Joint)),
         TokenTree::Punct(Punct::new(':', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("new", Span::call_site())),
+        ident("new"),
         TokenTree::Group(Group::new(
             Delimiter::Parenthesis,
             TokenStream::new(),
         )),
         TokenTree::Punct(Punct::new(';', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("executor", Span::call_site())),
+        ident("executor"),
         TokenTree::Punct(Punct::new('.', Spacing::Alone)),
-        TokenTree::Ident(Ident::new("run_until", Span::call_site())),
+        ident("run_until"),
         TokenTree::Group(Group::new(
             Delimiter::Parenthesis,
             TokenStream::from_iter([
-                TokenTree::Ident(Ident::new("main", Span::call_site())),
+                ident("main"),
                 TokenTree::Group(Group::new(
                     Delimiter::Parenthesis,
                     TokenStream::from_iter([
-                        TokenTree::Ident(Ident::new(
-                            "executor",
-                            Span::call_site(),
-                        )),
+                        ident("executor"),
                         TokenTree::Punct(Punct::new('.', Spacing::Alone)),
-                        TokenTree::Ident(Ident::new(
-                            "spawner",
-                            Span::call_site(),
-                        )),
+                        ident("spawner"),
                         TokenTree::Group(Group::new(
                             Delimiter::Parenthesis,
                             TokenStream::new(),
@@ -63,8 +57,8 @@ pub(crate) fn futures(tokens: &mut TokenStream, item: TokenStream) {
     ]);
 
     tokens.extend([
-        TokenTree::Ident(Ident::new("fn", Span::call_site())),
-        TokenTree::Ident(Ident::new("main", Span::call_site())),
+        ident("fn"),
+        ident("main"),
         TokenTree::Group(Group::new(
             Delimiter::Parenthesis,
             TokenStream::new(),
