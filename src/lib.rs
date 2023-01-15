@@ -41,6 +41,7 @@
 #![doc = include_str!("../examples/tokio.rs")]
 //! ```
 
+#![no_std]
 #![forbid(unsafe_code)]
 #![warn(
     anonymous_parameters,
@@ -58,4 +59,10 @@
     variant_size_differences
 )]
 
+extern crate alloc;
+
+mod spawn;
+
 pub use async_main_macro::async_main;
+
+pub use self::spawn::{LocalSpawner, Spawn, Spawner};
