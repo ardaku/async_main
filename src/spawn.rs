@@ -29,25 +29,83 @@ pub trait Spawn: Debug {
     }
 }
 
-/// Handle to an asynchronous task spawner that can only spawn tasks on the
+/// Handle to an asynchronous task spawner that can only spawn tasks from the
 /// current thread.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct LocalSpawner(Arc<dyn Spawn>);
 
 impl LocalSpawner {
-    /// Create a new spawner that can only spawn tasks on the current thread.
+    /// Create a new spawner that can only spawn tasks from the current thread.
+    #[inline(always)]
     pub fn new<S: Spawn + 'static>(spawn: S) -> Self {
         Self(Arc::new(spawn))
+    }
+
+    /// Spawn a [`Future`] without the [`Send`] requirement.
+    ///
+    /// This forces the executor to always run the task on the same thread that
+    /// this method is called on.
+    pub fn spawn_local(&self, f: impl Future<Output = ()> + 'static) {
+        Spawn::spawn_local(self, Box::new(f))
+    }
+
+    /// Spawn a [`Future`] that is [`Send`].
+    ///
+    /// This allows the executor to run the task on whatever thread it
+    /// determines is most efficient.
+    pub fn spawn(&self, f: impl Future<Output = ()> + Send + 'static) {
+        Spawn::spawn(self, Box::new(f))
+    }
+}
+
+impl Spawn for LocalSpawner {
+    #[inline(always)]
+    fn spawn_local(&self, f: Box<dyn Future<Output = ()> + 'static>) {
+        self.0.spawn_local(f)
+    }
+
+    #[inline(always)]
+    fn spawn(&self, f: Box<dyn Future<Output = ()> + Send + 'static>) {
+        self.0.spawn(f)
     }
 }
 
 /// Handle to an asynchronous task spawner that can spawn tasks from any thread.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Spawner(Arc<dyn Spawn + Send + Sync>);
 
 impl Spawner {
     /// Create a new spawner that can spawn tasks from any thread.
+    #[inline(always)]
     pub fn new<S: Spawn + Send + Sync + 'static>(spawn: S) -> Self {
         Self(Arc::new(spawn))
+    }
+
+    /// Spawn a [`Future`] without the [`Send`] requirement.
+    ///
+    /// This forces the executor to always run the task on the same thread that
+    /// this method is called on.
+    pub fn spawn_local(&self, f: impl Future<Output = ()> + 'static) {
+        Spawn::spawn_local(self, Box::new(f))
+    }
+
+    /// Spawn a [`Future`] that is [`Send`].
+    ///
+    /// This allows the executor to run the task on whatever thread it
+    /// determines is most efficient.
+    pub fn spawn(&self, f: impl Future<Output = ()> + Send + 'static) {
+        Spawn::spawn(self, Box::new(f))
+    }
+}
+
+impl Spawn for Spawner {
+    #[inline(always)]
+    fn spawn_local(&self, f: Box<dyn Future<Output = ()> + 'static>) {
+        self.0.spawn_local(f)
+    }
+
+    #[inline(always)]
+    fn spawn(&self, f: Box<dyn Future<Output = ()> + Send + 'static>) {
+        self.0.spawn(f)
     }
 }
