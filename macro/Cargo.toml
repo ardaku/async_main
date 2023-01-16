@@ -23,3 +23,6 @@ edition = "2021"
 
 [lib]
 proc-macro = true
+
+[features]
+default = []

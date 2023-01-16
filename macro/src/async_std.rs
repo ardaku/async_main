@@ -9,7 +9,7 @@
 
 use super::*;
 
-pub(crate) fn async_std(tokens: &mut TokenStream, item: TokenStream) {
+pub(crate) fn wrap(tokens: &mut TokenStream, item: TokenStream) {
     let mut body = item;
 
     body.extend([

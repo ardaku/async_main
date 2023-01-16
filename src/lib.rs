@@ -59,10 +59,15 @@
     variant_size_differences
 )]
 
-extern crate alloc;
-
+#[cfg_attr(feature = "async-executor", path = "async_executor.rs")]
+#[cfg_attr(feature = "async-std", path = "async_std.rs")]
+#[cfg_attr(feature = "futures", path = "futures.rs")]
+#[cfg_attr(feature = "pasts", path = "pasts.rs")]
+#[cfg_attr(feature = "smolscale", path = "smolscale.rs")]
+#[cfg_attr(feature = "tokio", path = "tokio.rs")]
 mod spawn;
 
 pub use async_main_macro::async_main;
+pub use pasts::Spawn;
 
-pub use self::spawn::{LocalSpawner, Spawn, Spawner};
+pub use self::spawn::{LocalSpawner};

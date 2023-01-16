@@ -26,13 +26,6 @@
     variant_size_differences
 )]
 
-mod async_executor;
-mod async_std;
-mod futures;
-mod pasts;
-mod smolscale;
-mod tokio;
-
 use proc_macro::{
     Delimiter, Group, Ident, Literal, Punct, Spacing, Span, TokenStream,
     TokenTree,
@@ -56,42 +49,15 @@ pub fn async_main(attr: TokenStream, item: TokenStream) -> TokenStream {
     let attr: Vec<_> = attr.into_iter().collect();
     let mut tokens = TokenStream::new();
 
-    if attr.len() > 1 {
+    if attr.len() > 0 {
         error(
             &mut tokens,
-            &format!("Expected a single attribute, found {attr:?}"),
+            &format!("Expected no attributes, found {attr:?}"),
         );
         return tokens;
     }
-    let Some(runtime) = attr.get(0) else {
-        error(&mut tokens, concat!(
-            "Expected one of: ",
-            "[async_executor, async_std, futures, pasts, tokio]",
-            " specifying which runtime"));
-        return tokens;
-    };
-    let TokenTree::Ident(runtime) = runtime else {
-        error(
-            &mut tokens,
-            &format!("Expected an identifier, found {runtime:?}"),
-        );
-        return tokens;
-    };
 
-    match runtime.to_string().as_str() {
-        "async_executor" => async_executor::async_executor(&mut tokens, item),
-        "async_std" => async_std::async_std(&mut tokens, item),
-        "futures" => futures::futures(&mut tokens, item),
-        "pasts" => pasts::pasts(&mut tokens, item),
-        "smolscale" => smolscale::smolscale(&mut tokens, item),
-        "tokio" => tokio::tokio(&mut tokens, item),
-        other => error(
-            &mut tokens,
-            &format!(
-                "{other:?} runtime not supported yet.  Feel free to open a PR",
-            ),
-        ),
-    }
+    wrap(&mut tokens, item);
 
     tokens
 }
@@ -111,5 +77,59 @@ fn error(tokens: &mut TokenStream, message: &str) {
             ))]),
         )),
         TokenTree::Punct(Punct::new(';', Spacing::Alone)),
+    ]);
+}
+
+pub(crate) fn wrap(tokens: &mut TokenStream, item: TokenStream) {
+    let mut body = item;
+
+    body.extend([
+        ident("let"),
+        ident("spawner"),
+        TokenTree::Punct(Punct::new('=', Spacing::Alone)),
+        ident("async_main"),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Punct(Punct::new(':', Spacing::Alone)),
+        ident("LocalSpawner"),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Punct(Punct::new(':', Spacing::Alone)),
+        ident("default"),
+        TokenTree::Group(Group::new(
+            Delimiter::Parenthesis,
+            TokenStream::new(),
+        )),
+        TokenTree::Punct(Punct::new(';', Spacing::Alone)),
+        ident("spawner"),
+        TokenTree::Punct(Punct::new('.', Spacing::Alone)),
+        ident("clone"),
+        TokenTree::Group(Group::new(
+            Delimiter::Parenthesis,
+            TokenStream::new(),
+        )),
+        TokenTree::Punct(Punct::new('.', Spacing::Alone)),
+        ident("block_on"),
+        TokenTree::Group(Group::new(
+            Delimiter::Parenthesis,
+            TokenStream::from_iter([
+                ident("main"),
+                TokenTree::Group(Group::new(
+                    Delimiter::Parenthesis,
+                    TokenStream::from_iter([
+                        ident("spawner"),
+                    ]),
+                )),
+            ]),
+        )),
+        TokenTree::Punct(Punct::new(';', Spacing::Alone)),
+    ]);
+
+    tokens.extend([
+        ident("fn"),
+        ident("main"),
+        TokenTree::Group(Group::new(
+            Delimiter::Parenthesis,
+            TokenStream::new(),
+        )),
+        TokenTree::Group(Group::new(Delimiter::Brace, body)),
     ]);
 }
