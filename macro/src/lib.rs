@@ -123,7 +123,32 @@ pub(crate) fn wrap(tokens: &mut TokenStream, item: TokenStream) {
         TokenTree::Punct(Punct::new(';', Spacing::Alone)),
     ]);
 
+    if cfg!(feature = "web") {
+        tokens.extend([
+            TokenTree::Punct(Punct::new('#', Spacing::Joint)),
+            TokenTree::Group(Group::new(
+                Delimiter::Bracket,
+                TokenStream::from_iter([
+                    ident("wasm_bindgen"),
+                    TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+                    TokenTree::Punct(Punct::new(':', Spacing::Alone)),
+                    ident("prelude"),
+                    TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+                    TokenTree::Punct(Punct::new(':', Spacing::Alone)),
+                    ident("wasm_bindgen"),
+                    TokenTree::Group(Group::new(
+                        Delimiter::Parenthesis,
+                        TokenStream::from_iter([
+                            ident("start"),
+                        ]),
+                    )),
+                ]),
+            )),
+        ]);
+    }
+
     tokens.extend([
+        ident("pub"),
         ident("fn"),
         ident("main"),
         TokenTree::Group(Group::new(

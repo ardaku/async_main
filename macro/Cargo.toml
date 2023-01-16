@@ -26,3 +26,5 @@ proc-macro = true
 
 [features]
 default = []
+
+web = []

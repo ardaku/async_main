@@ -46,3 +46,5 @@ futures = []
 pasts = []
 smolscale = []
 tokio = []
+
+web = ["async_main_macro/web"]
