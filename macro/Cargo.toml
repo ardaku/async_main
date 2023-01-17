@@ -9,8 +9,9 @@
 
 [package]
 name = "async_main_macro"
-version = "0.1.0"
-license = "Apache-2.0 OR BSL-1.0 OR MIT"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
 description = "Runtime-agnostic async main proc macro"
 repository = "https://github.com/ardaku/async_main"
 documentation = "https://docs.rs/async_main"
@@ -19,7 +20,6 @@ include = ["/src/**", "/examples/**", "/README.md"]
 keywords = ["async", "platform-agnostic", "cross-platform", "executor", "main"]
 categories = ["asynchronous", "embedded", "no-std", "rust-patterns", "wasm"]
 readme = "README.md"
-edition = "2021"
 
 [lib]
 proc-macro = true

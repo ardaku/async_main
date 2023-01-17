@@ -11,34 +11,17 @@
 //! single-threaded task pools, but in a future version will add a configuration
 //! option to enable multi-threaded task pools.
 //!
-//! # Async Executor (with `futures-lite`)
+//! # Getting Started
+//! Choose a runtime by enabling one of the following features:
+//!
+//!  - *`async-executor`*
+//!  - *`async-std`*
+//!  - *`futures`*
+//!  - *`pasts`*
+//!  - *`tokio`*
+//!
 //! ```rust
-#![doc = include_str!("../examples/async_executor.rs")]
-//! ```
-//! 
-//! # Async Std
-//! ```rust
-#![doc = include_str!("../examples/async_std.rs")]
-//! ```
-//! 
-//! # Futures
-//! ```rust
-#![doc = include_str!("../examples/futures.rs")]
-//! ```
-//! 
-//! # Pasts
-//! ```rust
-#![doc = include_str!("../examples/pasts.rs")]
-//! ```
-//! 
-//! # Smolscale
-//! ```rust
-#![doc = include_str!("../examples/smolscale.rs")]
-//! ```
-//! 
-//! # Tokio
-//! ```rust
-#![doc = include_str!("../examples/tokio.rs")]
+#![doc = include_str!("../examples/main.rs")]
 //! ```
 
 #![no_std]
@@ -59,15 +42,17 @@
     variant_size_differences
 )]
 
+#[allow(unused_extern_crates)]
+extern crate alloc;
+
 #[cfg_attr(feature = "async-executor", path = "async_executor.rs")]
 #[cfg_attr(feature = "async-std", path = "async_std.rs")]
 #[cfg_attr(feature = "futures", path = "futures.rs")]
 #[cfg_attr(feature = "pasts", path = "pasts.rs")]
-#[cfg_attr(feature = "smolscale", path = "smolscale.rs")]
 #[cfg_attr(feature = "tokio", path = "tokio.rs")]
 mod spawn;
 
 pub use async_main_macro::async_main;
 pub use pasts::Spawn;
 
-pub use self::spawn::{LocalSpawner};
+pub use self::spawn::LocalSpawner;

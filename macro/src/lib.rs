@@ -38,7 +38,6 @@ use proc_macro::{
 ///  - `async_std`
 ///  - `futures`
 ///  - `pasts`
-///  - `smolscale`
 ///  - `tokio`
 ///
 /// # Options
@@ -114,9 +113,7 @@ pub(crate) fn wrap(tokens: &mut TokenStream, item: TokenStream) {
                 ident("main"),
                 TokenTree::Group(Group::new(
                     Delimiter::Parenthesis,
-                    TokenStream::from_iter([
-                        ident("spawner"),
-                    ]),
+                    TokenStream::from_iter([ident("spawner")]),
                 )),
             ]),
         )),
@@ -138,9 +135,7 @@ pub(crate) fn wrap(tokens: &mut TokenStream, item: TokenStream) {
                     ident("wasm_bindgen"),
                     TokenTree::Group(Group::new(
                         Delimiter::Parenthesis,
-                        TokenStream::from_iter([
-                            ident("start"),
-                        ]),
+                        TokenStream::from_iter([ident("start")]),
                     )),
                 ]),
             )),

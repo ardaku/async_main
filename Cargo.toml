@@ -9,12 +9,18 @@
 
 [workspace]
 members = [".", "macro"]
-default_members = [".", "macro"]
+default-members = [".", "macro"]
+
+[workspace.package]
+version = "0.2.0"
+license = "Apache-2.0 OR BSL-1.0 OR MIT"
+edition = "2021"
 
 [package]
 name = "async_main"
-version = "0.1.0"
-license = "Apache-2.0 OR BSL-1.0 OR MIT"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
 description = "Runtime-agnostic async main proc macro"
 repository = "https://github.com/ardaku/async_main"
 documentation = "https://docs.rs/async_main"
@@ -23,28 +29,27 @@ include = ["/src/**", "/examples/**", "/README.md"]
 keywords = ["async", "platform-agnostic", "cross-platform", "executor", "main"]
 categories = ["asynchronous", "embedded", "no-std", "rust-patterns", "wasm"]
 readme = "../README.md"
-edition = "2021"
 
 [dependencies]
 async_main_macro = { path = "macro" }
-pasts = { path = "../pasts" } #"0.12"
+pasts = "0.13"
 
-[dev-dependencies]
-async-executor = "1.5"
-async-std = "1.12"
-futures = { version = "0.3", features = ["executor"] }
-futures-lite = "1.12"
-smolscale = "0.3"
-tokio = { version = "1.23", features = ["rt"] }
+async-executor = { version = "1.5", optional = true }
+async-std = { version = "1.12", features = ["unstable"], optional = true }
+futures = { version = "0.3", features = ["executor"], optional = true }
+futures-lite = { version = "1.12", optional = true }
+tokio = { version = "1.23", features = ["rt"], optional = true }
 
 [features]
 default = []
 
-async-executor = []
-async-std = []
-futures = []
+async-executor = ["dep:async-executor", "dep:futures-lite"]
+async-std = ["dep:async-std"]
+futures = ["dep:futures"]
 pasts = []
-smolscale = []
-tokio = []
+tokio = ["dep:tokio"]
 
 web = ["async_main_macro/web"]
+
+[package.metadata.docs.rs]
+features = ["pasts"]

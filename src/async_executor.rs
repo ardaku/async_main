@@ -7,29 +7,33 @@
 // At your choosing (See accompanying files LICENSE_APACHE_2_0.txt,
 // LICENSE_MIT.txt and LICENSE_BOOST_1_0.txt).
 
+use alloc::rc::Rc;
 use core::future::Future;
-
-use pasts::Spawn;
 
 /// Handle to a `!Send` asynchronous task spawner.
 #[derive(Clone, Debug, Default)]
-pub struct LocalSpawner(pasts::Executor);
+pub struct LocalSpawner(Rc<async_executor::LocalExecutor<'static>>);
 
 impl LocalSpawner {
     /// Block on a future and run the task pool until all tasks have completed.
     pub fn block_on(self, f: impl Future<Output = ()> + 'static) {
-        self.0.block_on(f);
+        self.0.spawn(f).detach();
+        futures_lite::future::block_on(async {
+            while !self.0.is_empty() {
+                self.0.tick().await
+            }
+        });
     }
 }
 
-impl Spawn for LocalSpawner {
+impl super::Spawn for LocalSpawner {
     #[inline(always)]
     fn spawn_local(&self, f: impl Future<Output = ()> + 'static) {
-        self.0.spawn_local(f)
+        self.0.spawn(f).detach();
     }
 
     #[inline(always)]
     fn spawn(&self, f: impl Future<Output = ()> + Send + 'static) {
-        self.0.spawn(f)
+        self.0.spawn(f).detach();
     }
 }
