@@ -12,7 +12,7 @@ members = [".", "macro"]
 default-members = [".", "macro"]
 
 [workspace.package]
-version = "0.2.0"
+version = "0.3.0"
 license = "Apache-2.0 OR BSL-1.0 OR MIT"
 edition = "2021"
 
@@ -32,12 +32,12 @@ readme = "README.md"
 
 [dependencies]
 async_main_macro = "0.2"
-pasts = "0.13"
 
 async-executor = { version = "1.5", optional = true }
 async-std = { version = "1.12", features = ["unstable"], optional = true }
 futures = { version = "0.3", features = ["executor"], optional = true }
 futures-lite = { version = "1.12", optional = true }
+pasts = { version = "0.14", optional = true }
 tokio = { version = "1.23", features = ["rt"], optional = true }
 
 [features]
@@ -46,7 +46,7 @@ default = []
 async-executor = ["dep:async-executor", "dep:futures-lite"]
 async-std = ["dep:async-std"]
 futures = ["dep:futures"]
-pasts = []
+pasts = ["dep:pasts"]
 tokio = ["dep:tokio"]
 
 web = ["async_main_macro/web"]

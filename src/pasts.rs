@@ -9,7 +9,7 @@
 
 use core::future::Future;
 
-use pasts::Spawn;
+use crate::Spawn;
 
 /// Handle to a `!Send` asynchronous task spawner.
 #[derive(Clone, Debug, Default)]
@@ -25,11 +25,11 @@ impl LocalSpawner {
 impl Spawn for LocalSpawner {
     #[inline(always)]
     fn spawn_local(&self, f: impl Future<Output = ()> + 'static) {
-        self.0.spawn_local(f)
+        self.0.spawn_boxed(f)
     }
 
     #[inline(always)]
     fn spawn(&self, f: impl Future<Output = ()> + Send + 'static) {
-        self.0.spawn(f)
+        self.0.spawn_boxed(f)
     }
 }
