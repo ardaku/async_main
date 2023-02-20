@@ -31,7 +31,7 @@ categories = ["asynchronous", "embedded", "no-std", "rust-patterns", "wasm"]
 readme = "README.md"
 
 [dependencies]
-async_main_macro = "0.2"
+async_main_macro = "0.3"
 
 async-executor = { version = "1.5", optional = true }
 async-std = { version = "1.12", features = ["unstable"], optional = true }
