@@ -12,7 +12,7 @@ members = [".", "macro"]
 default-members = [".", "macro"]
 
 [workspace.package]
-version = "0.3.0"
+version = "0.4.0"
 license = "Apache-2.0 OR BSL-1.0 OR MIT"
 edition = "2021"
 
@@ -31,14 +31,40 @@ categories = ["asynchronous", "embedded", "no-std", "rust-patterns", "wasm"]
 readme = "README.md"
 
 [dependencies]
-async_main_macro = "0.3"
+async_main_macro = "0.4"
 
-async-executor = { version = "1.5", optional = true }
-async-std = { version = "1.12", features = ["unstable"], optional = true }
-futures = { version = "0.3", features = ["executor"], optional = true }
-futures-lite = { version = "1.12", optional = true }
-pasts = { version = "0.14", optional = true }
-tokio = { version = "1.23", features = ["rt"], optional = true }
+[dependencies.async-executor]
+version = "1.5"
+optional = true
+default-features = false
+
+[dependencies.async-std]
+version = "=1.12.0"
+optional = true
+default-features = false
+features = ["unstable", "default"]
+
+[dependencies.futures]
+version = "0.3"
+optional = true
+default-features = false
+features = ["executor"]
+
+[dependencies.futures-lite]
+version = "1.12"
+optional = true
+default-features = false
+
+[dependencies.pasts]
+version = "0.14"
+optional = true
+default-features = false
+
+[dependencies.tokio]
+version = "1.23"
+optional = true
+default-features = false
+features = ["rt"]
 
 [features]
 default = []

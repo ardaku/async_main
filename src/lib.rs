@@ -58,13 +58,14 @@ pub use self::spawn::LocalSpawner;
 
 /// Implementation for spawning tasks on an executor.
 pub trait Spawn: Clone {
-    /// Spawn a [`Future`] without the [`Send`] requirement.
+    /// Spawn a [`Future`](core::future::Future) without the [`Send`]
+    /// requirement.
     ///
     /// This forces the executor to always run the task on the same thread that
     /// this method is called on.
     fn spawn_local(&self, f: impl core::future::Future<Output = ()> + 'static);
 
-    /// Spawn a [`Future`] that is [`Send`].
+    /// Spawn a [`Future`](core::future::Future) that is [`Send`].
     ///
     /// This allows the executor to run the task on whatever thread it
     /// determines is most efficient.

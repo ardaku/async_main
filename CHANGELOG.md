@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://github.com/AldaronLau/semver).
 
+## [0.4.0] - 2023-06-02
+### Changed
+ - Disable default features by default for each async runtime
+
+### Fixed
+ - Broken link for `Future` in documentation
+
 ## [0.3.0] - 2023-02-19
 ### Changed
  - Update pasts to 0.14
